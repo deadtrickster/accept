@@ -1,15 +1,56 @@
 
 
-# accept #
+# Accept header(s) for Erlang/Elixir #
 
 Copyright (c) 2016 Ilya Khaprov <<i.khaprov@gmail.com>>.
 
-__Version:__ 0.0.1
+__Version:__ 0.1.0
 
 [![Hex.pm](https://img.shields.io/hexpm/v/accept.svg?maxAge=2592000?style=plastic)](https://hex.pm/packages/accept)
 [![Hex.pm](https://img.shields.io/hexpm/dt/accept.svg?maxAge=2592000)](https://hex.pm/packages/accept)
 [![Build Status](https://travis-ci.org/deadtrickster/accept.erl.svg?branch=version-3)](https://travis-ci.org/deadtrickster/accept.erl)
 [![Coverage Status](https://coveralls.io/repos/github/deadtrickster/accept.erl/badge.svg?branch=master)](https://coveralls.io/github/deadtrickster/accept.erl?branch=master)
+
+## Examples
+
+### Accept Header
+
+#### Parsing
+
+```erlang-repl
+
+1> accept_header:parse("text/*;q=0.3, text/html;q=0.7, text/html;level=1,"
+                       "text/html;level=2;q=0.4, */*;q=0.5").
+[{media_range,"text","*",0.3,[]},
+ {media_range,"text","html",0.7,[]},
+ {media_range,"text","html",1,[{"level","1"}]},
+ {media_range,"text","html",0.4,[{"level","2"}]},
+ {media_range,"*","*",0.5,[]}]
+
+```
+
+#### Content Negotiation
+
+```erlang-repl
+
+2> accept_header:negotiate("text/*;q=0.3, text/html;q=0.7, text/html;level=1,"
+                           "text/html;level=2;q=0.4, */*;q=0.5",
+                           ["text/html;level=2", "text/html;level-3"]).
+"text/html;level-3"
+
+```
+
+`"text/html;level-3"` returned because `"text/html;level=2"` matches to
+`text/html;level=2;q=0.4` with score 0.4 and most specific match for
+`"text/html;level-3"` is `text/html;q=0.7` with score 0.7.<pre lang="erlang-repl">
+3> accept_header:negotiate("application/xml,application/xhtml+xml,"
+3>                         "text/html;q=0.9,text/plain;q=0.8,image/png,image/*;q=0.9,*/*;q=0.5",
+3>                         ["text/n3",
+3>                          "application/rdf+xml"]).
+"text/n3"
+</pre>
+
+Negotiate preserves user-defined order for equally scored alternatives.
 
 ## Contributing
 
@@ -28,3 +69,11 @@ Pre-commit check can be skipped passing `--no-verify` option to git commit.
 ## License
 
 MIT
+
+
+## Modules ##
+
+
+<table width="100%" border="0" summary="list of modules">
+<tr><td><a href="accept_header.md" class="module">accept_header</a></td></tr></table>
+

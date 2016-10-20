@@ -15,7 +15,7 @@
 
 #### Parsing
 
-<pre lang="erlang-repl">
+<pre lang="erlang">
 1> accept_header:parse("text/*;q=0.3, text/html;q=0.7, text/html;level=1,"
                        "text/html;level=2;q=0.4, */*;q=0.5").
 [{media_range,"text","*",0.3,[]},
@@ -27,18 +27,18 @@
 
 #### Content Negotiation
 
-<pre lang="erlang-repl">
+<pre lang="erlang">
 2> accept_header:negotiate("text/*;q=0.3, text/html;q=0.7, text/html;level=1,"
                            "text/html;level=2;q=0.4, */*;q=0.5",
                            ["text/html;level=2", "text/html;level-3"]).
 "text/html;level-3"
 </pre>
 
-`"text/html;level-3"` returned because `"text/html;level=2"` matches to
-`text/html;level=2;q=0.4` with score 0.4 and most specific match for
-`"text/html;level-3"` is `text/html;q=0.7` with score 0.7.
+`"text/html;level-3"' returned because `"text/html;level=2"' matches to
+`text/html;level=2;q=0.4' with score 0.4 and most specific match for
+`"text/html;level-3"' is `text/html;q=0.7' with score 0.7.
 
-<pre lang="erlang-repl">
+<pre lang="erlang">
 3> accept_header:negotiate("application/xml,application/xhtml+xml,"
 3>                         "text/html;q=0.9,text/plain;q=0.8,image/png,image/*;q=0.9,*/*;q=0.5",
 3>                         ["text/n3",

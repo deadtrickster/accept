@@ -14,8 +14,8 @@
 %% Parses Accept header, returns a list of media_ranges.
 %%
 %% <pre lang="erlang-repl">
-%% 1> accept_header:parse("text/*;q=0.3, text/html;q=0.7, text/html;level=1,"
-%%                        "text/html;level=2;q=0.4, */*;q=0.5").
+%% accept_header:parse("text/*;q=0.3, text/html;q=0.7, text/html;level=1,"
+%%                     "text/html;level=2;q=0.4, */*;q=0.5").
 %% [{media_range,"text","*",0.3,[]},
 %%  {media_range,"text","html",0.7,[]},
 %%  {media_range,"text","html",1,[{"level","1"}]},
@@ -35,9 +35,9 @@ parse(AcceptString) ->
 %% and a list of alternatives.
 %%
 %% <pre lang="erlang-repl">
-%% 2> accept_header:negotiate("text/*;q=0.3, text/html;q=0.7, text/html;level=1,"
-%%                            "text/html;level=2;q=0.4, */*;q=0.5",
-%%                            ["text/html;level=2", "text/html;level-3"]).
+%% accept_header:negotiate("text/*;q=0.3, text/html;q=0.7, text/html;level=1,"
+%%                         "text/html;level=2;q=0.4, */*;q=0.5",
+%%                         ["text/html;level=2", "text/html;level-3"]).
 %% "text/html;level-3"
 %% </pre>
 %% @end

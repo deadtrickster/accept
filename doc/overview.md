@@ -6,8 +6,8 @@
 
 [![Hex.pm](https://img.shields.io/hexpm/v/accept.svg?maxAge=2592000?style=plastic)](https://hex.pm/packages/accept)
 [![Hex.pm](https://img.shields.io/hexpm/dt/accept.svg?maxAge=2592000)](https://hex.pm/packages/accept)
-[![Build Status](https://travis-ci.org/deadtrickster/accept.erl.svg?branch=version-3)](https://travis-ci.org/deadtrickster/accept.erl)
-[![Coverage Status](https://coveralls.io/repos/github/deadtrickster/accept.erl/badge.svg?branch=master)](https://coveralls.io/github/deadtrickster/accept.erl?branch=master)
+[![Build Status](https://travis-ci.org/deadtrickster/accept.svg?branch=version-3)](https://travis-ci.org/deadtrickster/accept)
+[![Coverage Status](https://coveralls.io/repos/github/deadtrickster/accept/badge.svg?branch=master)](https://coveralls.io/github/deadtrickster/accept?branch=master)
 
 ## Examples
 

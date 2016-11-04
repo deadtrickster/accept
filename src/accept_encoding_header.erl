@@ -26,10 +26,8 @@ negotiate(Header, Alternatives) ->
   CCs = parse(Header),
 
   Alts = lists:map(fun (Alt) ->
-                       {A, Tag} = case Alt of
-                                    {_, _} -> Alt;
-                                    _ -> {Alt, Alt}
-                                  end,
+                       {A, Tag} = accept_neg:alt_tag(Alt),
+
                        PA = parse_content_coding(accept_parser:ensure_string(A)),
                        %% list of Alt-CC scores
                        AltCCScores = lists:map(fun (CC) ->
@@ -37,8 +35,7 @@ negotiate(Header, Alternatives) ->
                                                end,
                                                CCs),
                        %% best Content Coding match for this Alternative
-                       [{Score, BCC} | _ ] = lists:sort(fun scored_cmp/2,
-                                                        AltCCScores),
+                       [{Score, BCC} | _] = accept_neg:sort_scored(AltCCScores),
                        case Score of
                          0 ->
                            {-1, Tag};
@@ -49,7 +46,7 @@ negotiate(Header, Alternatives) ->
                    end,
                    Alternatives),
 
-  {Q, Tag} = find_preferred_best(lists:keysort(1, Alts)),
+  {Q, Tag} = accept_neg:find_preferred_best(Alts),
   case Q of
     Q when Q =< 0 -> fallback_to_identity(CCs);
     _ -> Tag
@@ -73,9 +70,8 @@ parse_content_coding(String) ->
 
 fallback_to_identity(CCs) ->
   %% "identity is always valid
-  %% unless idnetity; q=0 or *;q=0
+  %% unless identity; q=0 or *;q=0
   identity_fallback(CCs, ["identity", "*"]).
-
 
 identity_fallback(_, []) ->
   identity;
@@ -89,40 +85,13 @@ identity_fallback(CCs, [C|R]) ->
       identity_fallback(CCs, R)
   end.
 
-scored_cmp({S1, _}, {S2, _}) ->
-  S1 > S2.
-
-find_preferred_best(Sorted) ->
-  [B | R] = lists:reverse(Sorted),
-  find_preferred_best(B, R).
-
-find_preferred_best({Q, _}, [{Q, _} = H | R]) ->
-  find_preferred_best(H, R);
-find_preferred_best(B, []) ->
-  B;
-find_preferred_best(B, _) ->
-  B.
-
 score_alt(#content_coding{coding = Coding,
                           params = CCParams},
           #content_coding{coding = Coding,
                           params = AltParams}) ->
-  4 + score_params(CCParams, AltParams);
+  4 + accept_neg:score_params(CCParams, AltParams);
 score_alt(#content_coding{coding = "*"},
           _) ->
   4;
 score_alt(_, _) ->
-  0.
-
-%% If content coding doesn't have params 1
-%% If params match 2
-%% otherwise 0
-score_params([], _) ->
-  1;
-score_params(CCParams, AltParams) when length(CCParams) == length(AltParams) ->
-  case lists:sort(CCParams) == lists:sort(AltParams) of
-    true -> 2;
-    _ -> 0
-  end;
-score_params(_, _) ->
   0.

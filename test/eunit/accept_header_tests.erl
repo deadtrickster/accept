@@ -110,4 +110,7 @@ content_negotiation_test() ->
   ?assertEqual(prometheus_text_format,
                accept_header:negotiate(?PROMETHEUS_ACCEPT,
                                        [{?PROMETHEUS_TEXT_FORMAT,
-                                         prometheus_text_format}])).
+                                         prometheus_text_format}])),
+
+  ?assertEqual(undefined,
+               accept_header:negotiate("text/plain;q=0, text/html", ["text/plain"])).

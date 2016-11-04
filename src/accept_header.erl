@@ -81,8 +81,11 @@ negotiate(Header, Alternatives) ->
   %% after sorting Tail has the best score.
   %% However if multiple alternatives have the same score as Tail
   %% we should find first best alternative to respect user's priority.
-  {_, Tag} = find_preferred_best(lists:keysort(1, Alts)),
-  Tag.
+  {Q, Tag} = find_preferred_best(lists:keysort(1, Alts)),
+   case Q of
+     Q when Q =< 0 -> undefined;
+     _ -> Tag
+   end.
 
 %%====================================================================
 %% Private Parts

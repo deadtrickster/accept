@@ -21,6 +21,9 @@
 -define(PROMETHEUS_TEXT_FORMAT, <<"text/plain; version=0.0.4">>).
 
 parse_accept_test() ->
+  ?assertMatch([],
+               accept_header:parse(<<"">>)),
+  
   ?assertMatch([{media_range, "text", "org", 0.5, []},
                 {media_range, "text", "html", 1, []},
                 {media_range, "*", "*", 1, [{"name", "value"}]},

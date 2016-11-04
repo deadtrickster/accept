@@ -48,7 +48,7 @@ parse_accept_test() ->
 
 content_negotiation_test() ->
 
-  ?assertEqual("text/html;level=1",
+  ?assertMatch("text/html;level=1",
                accept_header:negotiate(?RFC_ACCEPT, ["text/plain",
                                                      "text/html;level=2",
                                                      "image/jpeg",
@@ -56,64 +56,64 @@ content_negotiation_test() ->
                                                      "text/html;level=3",
                                                      "text/html;level=1"])),
 
-  ?assertEqual("text/html",
+  ?assertMatch("text/html",
                accept_header:negotiate(?RFC_ACCEPT, ["text/plain",
                                                      "text/html;level=2",
                                                      "image/jpeg",
                                                      "text/html"])),
 
-  ?assertEqual("text/html;level=3",
+  ?assertMatch("text/html;level=3",
                accept_header:negotiate(?RFC_ACCEPT, ["text/plain",
                                                      "text/html;level=2",
                                                      "image/jpeg",
                                                      "text/html;level=3"])),
 
-  ?assertEqual("image/jpeg",
+  ?assertMatch("image/jpeg",
                accept_header:negotiate(?RFC_ACCEPT, ["text/plain",
                                                      "text/html;level=2",
                                                      "image/jpeg"])),
 
-  ?assertEqual("text/html;level=2",
+  ?assertMatch("text/html;level=2",
                accept_header:negotiate(?RFC_ACCEPT, ["text/plain",
                                                      "text/html;level=2"])),
 
-  ?assertEqual("text/plain",
+  ?assertMatch("text/plain",
                accept_header:negotiate(?RFC_ACCEPT, ["text/plain"])),
 
 
-  ?assertEqual("image/png",
+  ?assertMatch("image/png",
                accept_header:negotiate(?CHROME_ACCEPT, ["text/html",
                                                         "image/png"])),
-  ?assertEqual("text/html",
+  ?assertMatch("text/html",
                accept_header:negotiate(?CHROME_ACCEPT, ["text/html",
                                                         "text/plain",
                                                         "text/n3"])),
-  ?assertEqual("text/plain",
+  ?assertMatch("text/plain",
                accept_header:negotiate(?CHROME_ACCEPT, ["text/n3",
                                                         "text/plain"])),
-  ?assertEqual("image/jpg",
+  ?assertMatch("image/jpg",
                accept_header:negotiate(?CHROME_ACCEPT, ["text/plain",
                                                         "image/jpg"])),
-  ?assertEqual("text/n3",
+  ?assertMatch("text/n3",
                accept_header:negotiate(?CHROME_ACCEPT, ["text/n3",
                                                         "application/rdf+xml"])),
 
-  ?assertEqual("text/n3",
+  ?assertMatch("text/n3",
                accept_header:negotiate("text/*;q=0.5",
                                        ["text/n3", "text/rdf+xml", "app/qwe"])),
 
 
-  ?assertEqual(prometheus_protobuf_format,
+  ?assertMatch(prometheus_protobuf_format,
                accept_header:negotiate(?PROMETHEUS_ACCEPT,
                                        [{?PROMETHEUS_TEXT_FORMAT,
                                          prometheus_text_format},
                                         {?PROMETHEUS_PROTOBUF_FORMAT,
                                          prometheus_protobuf_format}])),
 
-  ?assertEqual(prometheus_text_format,
+  ?assertMatch(prometheus_text_format,
                accept_header:negotiate(?PROMETHEUS_ACCEPT,
                                        [{?PROMETHEUS_TEXT_FORMAT,
                                          prometheus_text_format}])),
 
-  ?assertEqual(undefined,
+  ?assertMatch(undefined,
                accept_header:negotiate("text/plain;q=0, text/html", ["text/plain"])).

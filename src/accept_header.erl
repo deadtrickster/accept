@@ -1,4 +1,4 @@
-%% @doc HTTP instrumentation helpers
+%% @doc HTTP Accept header parser and content-type negotiation helper
 -module(accept_header).
 
 -export([parse/1,
@@ -25,10 +25,9 @@
 %% @end
 -spec parse(AcceptString) -> Result when
     AcceptString :: binary() | string (),
-    Result :: [#media_range{}].
+    Result :: [media_range()].
 parse(AcceptString) ->
-  lists:map(fun parse_media_range/1,
-            string:tokens(ensure_string(AcceptString), ",")).
+  accept_parser:map_options(fun parse_media_range/1, AcceptString).
 
 %% @doc
 %% Negotiates the most appropriate content_type given the accept header
@@ -57,7 +56,7 @@ negotiate(Header, Alternatives) ->
                                     {_, _} -> Alt;
                                     _ -> {Alt, Alt}
                                   end,
-                       PA = parse_media_range(ensure_string(A)),
+                       PA = parse_media_range(accept_parser:ensure_string(A)),
                        %% list of Alt-MR scores
                        AltMRScores = lists:map(fun (MR) ->
                                                    {score_alt(MR, PA), MR}
@@ -76,6 +75,7 @@ negotiate(Header, Alternatives) ->
                    end,
                    Alternatives),
 
+  io:format("~p", [Alts]),
   %% find alternative with the best score
   %% keysort is stable so order of Alternatives preserved
   %% after sorting Tail has the best score.
@@ -88,41 +88,18 @@ negotiate(Header, Alternatives) ->
 %% Private Parts
 %%====================================================================
 
-parse_media_range(RawMRString) ->
-  [MR | RawParams] = string:tokens(RawMRString, ";"),
+parse_media_range(#accept_option{option=Option,
+                                 q=Q,
+                                 params=Params}) ->
 
-  [Type, Subtype] = lists:map(fun string:strip/1, string:tokens(MR, "/")),
-
-  Params = lists:filtermap(fun parse_media_range_param/1, RawParams),
-
-  {Q, ParamsWOQ} = find_media_range_q(Params),
+  [Type, Subtype] = lists:map(fun string:strip/1, string:tokens(Option, "/")),
 
   #media_range{type = Type,
                subtype = Subtype,
                q = Q,
-               params = ParamsWOQ}.
-
-parse_media_range_param(Param) ->
-  case string:tokens(Param, "=") of
-    [Name, Value] -> {true, {Name, Value}};
-    _ -> false %% simply ignore malformed Name=Value pairs
-  end.
-
-find_media_range_q(Params) ->
-  {parse_q(proplists:get_value("q", Params, "1")),
-   proplists:delete("q", Params)}.
-
-parse_q(Q) ->
-  try
-    case lists:member($., Q) of
-      true ->
-        list_to_float(Q);
-      false ->
-        list_to_integer(Q)
-    end
-  catch error:badarg ->
-      0
-  end.
+               params = Params};
+parse_media_range(String) ->
+  parse_media_range(accept_parser:parse_option(String)).
 
 scored_cmp({S1, _}, {S2, _}) ->
   S1 > S2.
@@ -170,8 +147,3 @@ score_params(MRParams, AltParams) when length(MRParams) == length(AltParams) ->
   end;
 score_params(_, _) ->
   0.
-
-ensure_string(V) when is_list(V) ->
-  V;
-ensure_string(V) when is_binary(V) ->
-  binary_to_list(V).

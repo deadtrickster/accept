@@ -30,7 +30,7 @@ map_options(Fun, String) ->
                   string:tokens(String, ",")).
 
 parse(String) ->
-  lists:filtermap(map_options(fun (A) -> A end, String)).
+  map_options(fun (A) -> A end, String).
 
 parse_option(OptionStr) ->
   [Option | RawParams] = lists:map(fun string:strip/1,

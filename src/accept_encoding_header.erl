@@ -25,36 +25,44 @@ negotiate([], _) ->
 negotiate(Header, Alternatives) ->
   CCs = parse(Header),
 
-  Alts = lists:map(fun (Alt) ->
-                       {A, Tag} = accept_neg:alt_tag(Alt),
+  case CCs of
+    [] -> identity;
+    _ ->
+      negotiate_(CCs, Alternatives)
+  end.
 
-                       PA = parse_content_coding(accept_parser:ensure_string(A)),
-                       %% list of Alt-CC scores
-                       AltCCScores = lists:map(fun (CC) ->
-                                                   {score_alt(CC, PA), CC}
-                                               end,
-                                               CCs),
-                       %% best Content Coding match for this Alternative
-                       [{Score, BCC} | _] = accept_neg:sort_scored(AltCCScores),
-                       case Score of
-                         0 ->
-                           {-1, Tag};
-                         _ ->
-                           #content_coding{q = BCCQ} = BCC,
-                           {BCCQ, Tag}
-                       end
-                   end,
-                   Alternatives),
+%%====================================================================
+%% Private Parts
+%%====================================================================
+
+negotiate_(CCs, Alternatives) ->
+  Alts = lists:map
+           (fun (Alt) ->
+                {A, Tag} = accept_neg:alt_tag(Alt),
+
+                PA = parse_content_coding(accept_parser:ensure_string(A)),
+                %% list of Alt-CC scores
+                AltCCScores = lists:map(fun (CC) ->
+                                            {score_alt(CC, PA), CC}
+                                        end,
+                                        CCs),
+                %% best Content Coding match for this Alternative
+                [{Score, BCC} | _] = accept_neg:sort_scored(AltCCScores),
+                case Score of
+                  0 ->
+                    {-1, Tag};
+                  _ ->
+                    #content_coding{q = BCCQ} = BCC,
+                    {BCCQ, Tag}
+                end
+            end,
+            Alternatives),
 
   {Q, Tag} = accept_neg:find_preferred_best(Alts),
   case Q of
     Q when Q =< 0 -> fallback_to_identity(CCs);
     _ -> Tag
   end.
-
-%%====================================================================
-%% Private Parts
-%%====================================================================
 
 parse_content_coding(#accept_option{option=Coding,
                                     q=Q,

@@ -1,3 +1,4 @@
+%% @private
 -module(accept_parser).
 
 -export([ensure_string/1,

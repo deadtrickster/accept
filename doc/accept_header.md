@@ -5,7 +5,7 @@
 * [Function Index](#index)
 * [Function Details](#functions)
 
-HTTP instrumentation helpers.
+HTTP Accept header parser and content-type negotiation helper.
 
 <a name="index"></a>
 
@@ -51,7 +51,7 @@ and a list of alternatives.
 parse(AcceptString) -&gt; Result
 </code></pre>
 
-<ul class="definitions"><li><code>AcceptString = binary() | string()</code></li><li><code>Result = [#media_range{}]</code></li></ul>
+<ul class="definitions"><li><code>AcceptString = binary() | string()</code></li><li><code>Result = [<a href="#type-media_range">media_range()</a>]</code></li></ul>
 
 Parses Accept header, returns a list of media_ranges.
 

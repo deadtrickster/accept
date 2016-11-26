@@ -1,3 +1,4 @@
+%% @private
 -module(accept_neg).
 
 -export([alt_tag/1,

@@ -11,7 +11,7 @@
 
 ## Examples
 
-### Accept Header
+### [Accept Header](https://tools.ietf.org/html/rfc7231#section-5.3.2)
 
 #### Parsing
 
@@ -44,6 +44,35 @@
 3>                         ["text/n3",
 3>                          "application/rdf+xml"]).
 "text/n3"
+</pre>
+
+Negotiate preserves user-defined order for equally scored alternatives.
+
+### [Accept Encoding Header](https://tools.ietf.org/html/rfc7231#section-5.3.4)
+
+#### Parsing
+
+<pre lang="erlang">
+1> accept_encoding_header:parse("gzip;q=1.0, identity; q=0.5, *;q=0").
+[{content_coding,"gzip",1.0,[]},
+ {content_coding,"identity",0.5,[]},
+ {content_coding,"*",0,[]}]
+</pre>
+
+#### Content Negotiation
+
+<pre lang="erlang">
+1> accept_encoding_header:negotiate("compress, gzip",
+1>                                  ["identity", "compress"]).
+"compress"
+
+2> accept_encoding_header:negotiate("gzip;q=1.0, identity; q=0.5, *;q=0",
+2>                                  ["identity", "sdc", "gzip", "compress"]).
+"gzip"
+
+3> accept_encoding_header:negotiate("compress, gzip, *;q=0",
+3>                                  ["qwe"]).
+undefined
 </pre>
 
 Negotiate preserves user-defined order for equally scored alternatives.

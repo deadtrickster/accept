@@ -27,7 +27,7 @@ map_options(Fun, String) ->
                         Option -> {true, Fun(Option)}
                       end
                   end,
-                  string:tokens(String, ",")).
+                  string:tokens(ensure_string(String), ",")).
 
 parse(String) ->
   map_options(fun (A) -> A end, String).

@@ -98,9 +98,9 @@ content_negotiation_test() ->
                accept_header:negotiate(?CHROME_ACCEPT, ["text/n3",
                                                         "application/rdf+xml"])),
 
-  ?assertMatch("text/n3",
+  ?assertMatch(<<"text/n3">>,
                accept_header:negotiate("text/*;q=0.5",
-                                       ["text/n3", "text/rdf+xml", "app/qwe"])),
+                                       [<<"text/n3">>, "text/rdf+xml", "app/qwe"])),
 
 
   ?assertMatch(prometheus_protobuf_format,
@@ -116,4 +116,4 @@ content_negotiation_test() ->
                                          prometheus_text_format}])),
 
   ?assertMatch(undefined,
-               accept_header:negotiate("text/plain;q=0, text/html", ["text/plain"])).
+               accept_header:negotiate(<<"text/plain;q=0, text/html">>, ["text/plain"])).

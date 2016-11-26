@@ -21,12 +21,12 @@ negotiate(undefined, Alternatives) ->
     _ -> Alternatives
   end;
 negotiate([], _) ->
-  identity;
+  <<"identity">>;
 negotiate(Header, Alternatives) ->
   CCs = parse(Header),
 
   case CCs of
-    [] -> identity;
+    [] -> <<"identity">>;
     _ ->
       negotiate_(CCs, Alternatives)
   end.
@@ -82,13 +82,13 @@ fallback_to_identity(CCs) ->
   identity_fallback(CCs, ["identity", "*"]).
 
 identity_fallback(_, []) ->
-  identity;
+  <<"identity">>;
 identity_fallback(CCs, [C|R]) ->
   case lists:keyfind(C, #content_coding.coding, CCs) of
     #content_coding{q = 0} ->
       undefined;
     #content_coding{} ->
-      identity;
+      <<"identity">>;
     false ->
       identity_fallback(CCs, R)
   end.

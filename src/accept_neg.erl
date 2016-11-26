@@ -14,6 +14,7 @@
 alt_tag(Alt) ->
   case Alt of
     {_, _} -> Alt;
+    _ when is_binary(Alt) -> {accept_parser:ensure_string(Alt), Alt};
     _ -> {Alt, Alt}
   end.
 

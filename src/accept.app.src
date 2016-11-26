@@ -1,6 +1,6 @@
 {application, accept,
  [{description, "Accept header(s) for Erlang/Elixir"},
-  {vsn, "0.2.1"},
+  {vsn, "0.3.0"},
   {registered, []},
   {applications,
    [kernel,

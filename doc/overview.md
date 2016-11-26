@@ -9,9 +9,24 @@
 [![Build Status](https://travis-ci.org/deadtrickster/accept.svg?branch=version-3)](https://travis-ci.org/deadtrickster/accept)
 [![Coverage Status](https://coveralls.io/repos/github/deadtrickster/accept/badge.svg?branch=master)](https://coveralls.io/github/deadtrickster/accept?branch=master)
 
-## Examples
+## TOC
+ - [Headers](#headers)
+   - [Accept](#accept-header)
+     - [Parsing](#parsing)
+     - [Content Negotiation](#content-negotiation)
+   - [Accept-Encoding](#accept-encoding-header)
+     - [Parsing](#parsing-1)
+     - [Content Negotiation](#content-negotiation-1)
+   - [Process metrics](#process-metrics)
+   - [Exporter metrics](#exporter-metrics)
+ - [Contributing](#contributing)
+ - [License](#license)
 
-### [Accept Header](https://tools.ietf.org/html/rfc7231#section-5.3.2)
+## Headers
+
+### Accept
+
+[RFC](https://tools.ietf.org/html/rfc7231#section-5.3.2)
 
 #### Parsing
 
@@ -48,7 +63,9 @@
 
 Negotiate preserves user-defined order for equally scored alternatives.
 
-### [Accept Encoding Header](https://tools.ietf.org/html/rfc7231#section-5.3.4)
+### Accept-Encoding 
+
+[RFC](https://tools.ietf.org/html/rfc7231#section-5.3.4)
 
 #### Parsing
 

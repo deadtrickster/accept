@@ -10,15 +10,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/deadtrickster/accept/badge.svg?branch=master)](https://coveralls.io/github/deadtrickster/accept?branch=master)
 
 ## TOC
- - [Headers](#headers)
-   - [Accept](#accept-header)
-     - [Parsing](#parsing)
-     - [Content Negotiation](#content-negotiation)
-   - [Accept-Encoding](#accept-encoding-header)
-     - [Parsing](#parsing-1)
-     - [Content Negotiation](#content-negotiation-1)
-   - [Process metrics](#process-metrics)
-   - [Exporter metrics](#exporter-metrics)
+ - [Accept](#accept-header)
+ - [Accept-Encoding](#accept-encoding-header) 
  - [Contributing](#contributing)
  - [License](#license)
 

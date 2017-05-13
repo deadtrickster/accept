@@ -30,7 +30,7 @@ Parses Accept header, returns a list of media_ranges.</td></tr></table>
 negotiate(Header, Alternatives) -&gt; Match
 </code></pre>
 
-<ul class="definitions"><li><code>Header = BinaryOrString</code></li><li><code>Alternatives = [Alternative]</code></li><li><code>Alternative = BinaryOrString | {BinaryOrString | Tag}</code></li><li><code>BinaryOrString = binary() | string()</code></li><li><code>Tag = any()</code></li><li><code>Match = Tag | nomatch</code></li></ul>
+<ul class="definitions"><li><code>Header = BinaryOrString</code></li><li><code>Alternatives = [Alternative]</code></li><li><code>Alternative = BinaryOrString | {BinaryOrString, Tag}</code></li><li><code>BinaryOrString = binary() | string()</code></li><li><code>Tag = any()</code></li><li><code>Match = Tag | nomatch</code></li></ul>
 
 Negotiates the most appropriate content_type given the accept header
 and a list of alternatives.

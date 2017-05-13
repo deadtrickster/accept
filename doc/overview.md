@@ -1,6 +1,6 @@
 @copyright 2016 Ilya Khaprov <<i.khaprov@gmail.com>>.
 @title Accept header(s) for Erlang/Elixir
-@version 0.3.1
+@version 0.3.2
 
 @doc
 

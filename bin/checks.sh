@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./elvis rock && rebar3 do xref, dialyzer, eunit
+rebar3 as test do xref, dialyzer, eunit

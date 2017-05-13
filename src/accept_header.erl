@@ -43,7 +43,7 @@ parse(AcceptString) ->
 -spec negotiate(Header, Alternatives) -> Match when
     Header :: BinaryOrString,
     Alternatives :: [Alternative],
-    Alternative :: BinaryOrString | {BinaryOrString | Tag},
+    Alternative :: BinaryOrString | {BinaryOrString, Tag},
     BinaryOrString :: binary() | string(),
     Tag :: any(),
     Match :: Tag | nomatch.

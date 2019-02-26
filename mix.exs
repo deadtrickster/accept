@@ -3,7 +3,7 @@ defmodule Accept.Mixfile do
 
   def project do
     [app: :accept,
-     version: "0.3.4",
+     version: "0.3.5",
      description: description(),
      package: package()]
   end
